@@ -6,7 +6,7 @@
 /*   By: lcorinna <lcorinna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 19:24:31 by lcorinna          #+#    #+#             */
-/*   Updated: 2021/11/23 20:17:31 by lcorinna         ###   ########.fr       */
+/*   Updated: 2021/11/24 20:01:32 by lcorinna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (newstr);
 }
 
-
 void	*ft_memset(void *b, int c, size_t len)
 {
 	int		i;
@@ -65,21 +64,65 @@ void	*ft_memset(void *b, int c, size_t len)
 	return (e);
 }
 
+char	*ft_strchr(const char *s, int c)
+{
+	char	*a;
+	char	i;
+
+	i = (char) c;
+	a = (char *) s;
+	while (*a)
+	{
+		if (*a == i)
+			return (a);
+		a++;
+	}
+	if (*a == i)
+		return (a);
+	return (NULL);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	int		i;
+	int		p;
+	char	*join;
+
+	p = 0;
+	i = 0;
+	join = (char *) malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (join == NULL)
+		return (NULL);
+	while (s1[i])
+		join[p++] = s1[i++];
+	i = 0;
+	while (s2[i])
+		join[p++] = s2[i++];
+	join[p] = '\0';
+	return (join);
+}
+
 char	*get_next_line(int fd)
 {
-	char	str[42]; //BUFFER_SIZE
-	char	*new_str;
-	int		i;
+	char			*new_str;
+	static char		*reserv;
+	char			*str;
 
-	ft_memset(str, '\0', 42);
-	i = 0;
-	read(fd, str, 42); // нужно чтобы работало от 1 до 1000000000
-	while (str[i] != '\n')
-	{
-		i++;
-	}
-	printf("%s\n\n", str);
-	new_str = ft_substr(str, 0, i); // когда-то вернуть NULL
+	str = (char *) malloc(sizeof(char) * (5 + 1));//BUFFER_SIZE)
+	new_str = (char *) malloc(sizeof(char) * 1);
+	ft_memset(str, '\0', 5);//BUFFER_SIZE
+	// if (reserv)//при втором заходе забирать остатки в новую строку
+	// {
+	// 	new_str = reserv;
+	// }
+	// while ((ft_strchr(str, 10)) == NULL)
+	// {
+	read(fd, str, 5);//нужно чтобы работало от 1 до 1000000 //BUFFER_SIZE
+	//str[5] = '\0';
+	new_str = ft_strjoin(new_str, str);
+	//}
+	//printf("%s\n\n", str);
+	//new_str = ft_substr(str, 0, i); // когда-то вернуть NULL
 	return (new_str);
 }
 
@@ -88,12 +131,14 @@ int	main(void)
 	int		fd;
 	char	*gnl;
 
-	fd = open("text.txt", O_RDONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR); 
+	fd = open("text.txt", O_RDONLY);
 	// "open" return "fd", this allow you to call the file
-	while ((gnl = get_next_line(fd)) != NULL)
-	{
-		printf("%s\n", gnl);
-	}
+	gnl = get_next_line(fd);
+	printf("%s\n", gnl);
+	// while ((gnl = get_next_line(fd)) != NULL)
+	// {
+	// 	printf("%s\n", gnl);
+	// }
 	return (0);
 }
 
