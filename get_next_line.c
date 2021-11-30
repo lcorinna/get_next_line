@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcorinna <lcorinna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/21 19:24:31 by lcorinna          #+#    #+#             */
-/*   Updated: 2021/11/26 20:31:52 by lcorinna         ###   ########.fr       */
+/*   Created: 2021/11/28 12:09:04 by lcorinna          #+#    #+#             */
+/*   Updated: 2021/11/30 19:44:41 by lcorinna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,61 +18,19 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-size_t	ft_strlen(const char *r)
+size_t	ft_strlen(char *r)
 {
 	size_t	i;
 
 	i = 0;
+	if (r == NULL)
+		return (i);
 	while (r[i])
 		i++;
 	return (i);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	char	*newstr;
-	int		i;
-	int		count;
-
-	i = 0;
-	count = ft_strlen(s) - start;
-	if (count > (int) len)
-		count = (int) len;
-	if (count <= 0)
-		count = 0;
-	newstr = (char *) malloc(sizeof(char) * (count + 1));
-	if (newstr == NULL)
-		return (newstr);
-	while (s[start] != 0 && len-- != 0 && count != 0)
-		newstr[i++] = s[start++];
-	newstr[i] = '\0';
-	return (newstr);
-}
-
-char	*ft_substr_free(char const *s, unsigned int start, size_t len)
-{
-	char	*newstr;
-	int		i;
-	int		count;
-
-	i = 0;
-	count = ft_strlen(s) - start;
-	if (count > (int) len)
-		count = (int) len;
-	if (count <= 0)
-		count = 0;
-	newstr = (char *) malloc(sizeof(char) * (count + 1));
-	if (newstr == NULL)
-		return (newstr);
-	while (s[start] != 0 && len-- != 0 && count != 0)
-		newstr[i++] = s[start++];
-	newstr[i] = '\0';
-	free((char *) s);
-	s = NULL;
-	return (newstr);
-}
-
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr(char *s, int c)
 {
 	char	*a;
 	char	i;
@@ -90,7 +48,30 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strjoin_free(char const *s1, char const *s2)
+char	*ft_substr(char *s, unsigned int start, size_t len)
+{
+	char	*newstr;
+	int		i;
+	int		count;
+
+	i = 0;
+	count = ft_strlen(s) - start;
+	if (count > (int) len)
+		count = (int) len;
+	if (count <= 0)
+		count = 0;
+	newstr = (char *) malloc(sizeof(char) * (count + 1));
+	if (newstr == NULL)
+		return (newstr);
+	while (s[start] != 0 && len-- != 0 && count != 0)
+		newstr[i++] = s[start++];
+	newstr[i] = '\0';
+	// free(s);
+	// s = NULL;
+	return (newstr);
+}
+
+char	*ft_strjoin(char *s1, char *s2)
 {
 	int		i;
 	int		p;
@@ -101,235 +82,268 @@ char	*ft_strjoin_free(char const *s1, char const *s2)
 	join = (char *) malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (join == NULL)
 		return (NULL);
-	while (s1[i])
-		join[p++] = s1[i++];
+	if (s1 != NULL)
+	{
+		while (s1[i])
+			join[p++] = s1[i++];
+		free(s1);
+		s1 = NULL;
+	}
 	i = 0;
-	while (s2[i])
-		join[p++] = s2[i++];
+	if (s2 != NULL)
+	{
+		while (s2[i])
+			join[p++] = s2[i++];
+	}
 	join[p] = '\0';
-	// printf("%p-%s\n", s1, s1);
-	// printf("%p-%s\n", s2, s2);
-	free((char *) s1);
-	s1 = NULL;
-	free((char *) s2);
-	s2 = NULL;
+	// free(s2);
+	// s2 = NULL;
 	return (join);
 }
 
-// char	*get_next_line(int fd)
-// {
-// 	int				j;
-// 	int				i;
-// 	char			*str;
-// 	static char		*reserv;
-// 	str = (char *) malloc(sizeof(char) * (5 + 1)); //BUFFER_SIZE
-// 	i = read(fd, str, 5);
-// 	//printf("%d\n", i);
-// 	if (i == 0)
-// 		return (NULL);
-// 	if (reserv != NULL)
-// 	{
-// 		//read(fd, str, 5);
-// 		reserv = (ft_strjoin(reserv, str));
-// 	}
-// 	if (reserv == NULL)
-// 		reserv = ft_substr(str, 0, 5); //BUFFER_SIZE
-// 	while ((ft_strchr(reserv, '\n')) == NULL)
-// 	{
-// 		i = read(fd, str, 5); //BUFFER_SIZE
-// 		if (i < 1)
-// 			return (reserv);
-// 		reserv = ft_strjoin(reserv, str);
-// 	}
-// 	i = 0;
-// 	j = 0;
-// 	while (reserv[i] != '\n')
-// 	{
-// 		i++;
-// 		if (reserv[i] == '\0')
-// 			return (reserv);
-// 	}
-// 	while (reserv[i + j] != '\0')
-// 		j++;
-// 	str = ft_substr(reserv, 0, i);
-// 	reserv = ft_substr(reserv, (i + 1), j);
-// 	printf("reserv: %s", reserv);
-// 	return (str);
-// }
-
-char	*get_next_line(int fd)
+char	*ft_trim_for_str(char *res)
 {
-	int				j;
-	int				i;
-	char			*str;
-	static char		*res;
-
-	if (res != NULL)
-	{
-		if ((ft_strchr(res, '\n') != NULL))
-		{
-			i = 0;
-			j = 0;
-			while (res[i++] != '\n')
-			{
-				if (res[i] == '\0')
-					return (res);
-			}
-			while (res[i + j] != '\0')
-				j++;
-			str = ft_substr(res, 0, i);
-			res = ft_substr(res, i, j);
-			return (str);
-		}
-		while ((ft_strchr(res, '\n')) == NULL)
-		{
-			str = (char *) malloc(sizeof(char) * (5 + 1));
-			i = read(fd, str, 5);
-			str[i] = '\0';
-			if (i <= 0 || str[i - 1] == '\0')
-			{
-				str = ft_strjoin_free(res, str);
-				res = NULL;
-				return (str);
-			}
-			res = ft_strjoin_free(res, str);
-		}
-		i = 0;
-		j = 0;
-		while (res[i++] != '\n')
-		{
-			if (res[i] == '\0')
-				return (res);
-		}
-		while (res[i + j] != '\0')
-			j++;
-		str = ft_substr(res, 0, i);
-		res = ft_substr(res, i, j);
-		return (str);
-	}
-	else if (res == NULL)
-	{
-		res = (char *) malloc(sizeof(char) * (5 + 1));
-		i = read(fd, res, 5);
-		res[i] = '\0';
-		if (i <= 0)
-		{
-			free (res);
-			res = NULL;
-			return (NULL);
-		}
-		res = ft_substr_free(res, 0, i);
-		if (i < 5)
-			return (res);
-		while ((ft_strchr(res, '\n')) == NULL)
-		{
-			str = (char *) malloc(sizeof(char) * (5 + 1));
-			i = read(fd, str, 5);
-			if (i <= 0 || str[i - 1] == '\0')
-			{
-				free(str);
-				return (res);
-			}
-			res = ft_strjoin_free(res, str);
-		}
-	}
+	char	*str;
+	int		i;
+	
 	i = 0;
-	j = 0;
-	while (res[i++] != '\n')
-	{
-		if (res[i] == '\0')
-		{
-			str = ft_substr(res, 0, ft_strlen(res));
-			free(res);
-			res = NULL;
-			return (res);
-		}
-	}
-	while (res[i + j] != '\0')
-		j++;
-	str = ft_substr(res, 0, i);
-	res = ft_substr(res, i, j);
+	if (res == NULL)
+		return (NULL);
+	while (res[i] != '\n' && res[i] != '\0')
+		i++;
+	// if (res[i] == '\n')
+	// {
+	// 	str = ft_substr(res, 0, 2);
+	// 	return (str);
+	// }
+	// if (res[i] == '\0')
+	// {
+	// 	str = ft_substr(res, 0, i + 1);
+	// 	return (NULL);
+	// }
+	str = ft_substr(res, 0, i + 1);
 	return (str);
 }
 
-int	main(void)
+char	*ft_trim_for_res(char *res)
 {
-	int		fd;
-	char	*gnl;
-
-	fd = open("text.txt", O_RDONLY);
-	while ((gnl = get_next_line(fd)) != NULL)
+	char	*str;
+	int		i;
+	int		j;
+	
+	i = 0;
+	j = 0;
+	if (res == NULL)
+		return (NULL);
+	while (res[i] != '\n' && res[i] != '\0')
+		i++;
+	if (res[i] == '\0' || res[i + 1] == '\0')
 	{
-		printf("%s", gnl);
+		free(res);
+		res = NULL;
+		return (NULL);
 	}
-	// gnl = get_next_line(fd);
-	// printf("%s\n", gnl);
-	// free(gnl);
-	// gnl = get_next_line(fd);
-	// printf("%s\n", gnl);
-	// free(gnl);
-	// gnl = get_next_line(fd);
-	// printf("%s\n", gnl);
-	// free(gnl);
-	// gnl = get_next_line(fd);
-	printf("%s\n", gnl);
-	//free(gnl);
-	close (fd);
-	return (0);
+	while (res[i + j] != '\0')
+		j++;
+	str = ft_substr(res, (i + 1), j);
+	free(res);
+	res = NULL;
+	return (str);
 }
 
-/* Делает отладочные дампы во время компиляции в моменты времени определяемые буквами. 
-Они используются для отладки компилятора. Имена файлов для большинства дампов 
-получаются из имени исходного файла добавлением слова 
-(например, 'foo.c.rtl' или 'foo.c.jump'). Ниже указаны возможные буквы и их значения: */
-//'D' Дамп всех макро определений в конце препроцессирования, в добавление к нормалному выводу.
+void	*ft_memset(void *b, int c, size_t len)
+{
+	int		i;
+	char	*e;
 
-// void	Func(void)
-// {
-// 	static	int	x = 0;
-// 	// |x| is initialized only once across five calls of |Func| and the variable
-// 	// will get incremented five times after these calls. The final value of |x|
-// 	// will be 5.
-// 	x++;
-// 	printf("%d\n", x); // outputs the value of |x|
-// }
+	e = b;
+	i = 0;
+	while (i < (int) len)
+	{
+		e[i] = c;
+		i++;
+	}
+	return (e);
+}
 
-// int	main(void)
-// {
-// 	Func(); // prints 1
-// 	Func(); // prints 2
-// 	Func(); // prints 3
-// 	Func(); // prints 4  Func();  // prints 5
-// 	return (0);
-// }
+char	*ft_read(int fd, char *res)
+{
+	char	*str;
+	int		i;
+	int		chit;
+	
+	chit = 1;
+	if (res == NULL)
+	{
+		res = (char *) malloc(sizeof(char) * chit);
+		res = ft_memset(res, '\0', chit++);
+	}
+	while((ft_strchr(res, '\n')) == NULL)
+	{
+		if (chit != 1)
+		{
+			free(res);
+			res = NULL;
+			chit = 1;
+		}
+		str = (char *) malloc(sizeof(char) *  BUFFER_SIZE + 1);
+		i = read(fd, str,  BUFFER_SIZE);
+		if (i < 0)
+		{
+			free(str);
+			str = NULL;
+			return (NULL);			
+		}
+		str[i] = '\0';
+		if (i == 0)
+		{
+			free(str);
+			str = NULL;
+			return (res);
+		}
+		if (i <  BUFFER_SIZE)
+		{
+			res = ft_strjoin(res, str);
+			free(str);
+			str = NULL;
+			return (res);
+		}
+		res = ft_strjoin(res, str);
+		free(str);
+		str = NULL;
+	}
+	return (res);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*res;
+	char		*str;
+
+	if (fd < 0)
+		return (NULL);
+	res = ft_read(fd, res);
+	str = ft_trim_for_str(res);
+	res = ft_trim_for_res(res);
+	// if (res == NULL)
+	// {
+	// 	free(res);
+	// 	res = NULL;
+	// 	return (NULL);
+	// }
+	return (str);
+}
 
 // int	main(void)
 // {
 // 	int		fd;
-// 	int		er;
-// 	int		op;
-// 	char	c;
-// 	char	str[BUFFER_SIZE];
+// 	char	*gnl;
 
-// 	c = 'a';
-// 	// fd = open("text.txt", 12);
-// 	er = open("42", O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
-// 	fd = open("text.txt", O_RDONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
-// 	if (er == -1)
+// 	fd = open("text.txt", O_RDONLY);
+// 	while ((gnl = get_next_line(fd)) != NULL)
 // 	{
-// 		printf("%s\n", "im pooped");
-// 		return (0);
+// 		printf("%s", gnl);
+// 		free(gnl);
+// 		gnl = NULL;
 // 	}
-// 	printf("%d\n", fd);
-// //	write(fd, &c, 1);
-// 	op = read(fd, str, 3);
-// 	printf("%s\n", str);
-// 	op = read(fd, str, 3);
-// 	printf("%s\n", str);
-// 	printf("this %d\n", op);
-// 	//close(fd);
-// 	close(er);
-// 	//printf("%d\n", er);
-// 	write(er, &c, 1);
+// 	// gnl = get_next_line(fd);
+// 	//printf("%s\n", gnl);
+// 	// gnl = get_next_line(fd);
+// 	// printf("%s\n", gnl);
+// 	// gnl = get_next_line(fd);
+// 	// printf("%s\n", gnl);
+// 	close (fd);
 // 	return (0);
 // }
+
+// int	soldat(int i)
+// {
+// 	static int	s;
+
+// 	s = 1;
+// 	if (i > 100)
+// 		printf("polutchilos`!\n");
+// 	else
+// 	{
+// 		printf("soldat %d, ih sila = %d, etogo malo chtobi vitjanut` repku.\n" s, i);
+		//printf("Zovu soldata na pomosch\n\n");
+// 		soldat(i + 15);
+// 		s += 1;
+// 	}
+// 	return (s);
+// }
+
+// int	main(void)
+// {
+// 	int	repka;
+
+// 	repka = 15;
+// 	printf("%d\n", soldat(repka));
+// 	return (0);
+// }
+
+// int	ft_factorial(int n)
+// {
+// 	if (0 == n)
+// 		return (1);
+// 	return (ft_factorial(n - 1) * n);
+// }
+
+// int	ft_gcd(int a, int b)
+// {
+// 	if (0 == b)
+// 		return (a);
+// 	return (ft_gcd(b, a % b));
+// }
+
+// double	ft_fast_power(double a, int n)
+// {
+// 	 if (0 == n)
+// 	 	return (1);
+// 	if (n % 2 == 1)
+// 		return (a * ft_fast_power(a, n - 1));
+// 	else
+// 		return (ft_fast_power(a * a, n / 2));
+// }
+
+// int	ft_fib(int n)
+// {
+// 	if (n <= 1)
+// 		return (n);
+// 	return (ft_fib(n - 1) + ft_fib(n - 2));
+// }
+
+// int	main(int argc, char *argv[])
+// {
+// 	int	n;
+// 	int	m;
+
+// 	scanf("%d%d", &n, &m);
+// 	printf("factorial(%d) = %d\n", n , ft_factorial(n));
+// 	printf("ft_gcd(%d, %d) = %d\n", n, m, ft_gcd(n, m));
+// 	printf("ft_fast_power(%d, %d) = %lf\n", n, m, ft_fast_power(n, m));
+// 	printf("ft_fib(%d) = %d\n", n, ft_fib(n));
+// 	return (0);
+// }
+
+// void ft_hanoi(int n, int i, int k)
+// {
+// 	int	tmp;
+
+// 	if (1 == n)
+// 		printf("Move disk 1 from pin %d to %d.\n", i, k);
+// 	else
+// 	{	
+// 		tmp = 6 - i - k;
+// 		ft_hanoi((n - 1), i, tmp);
+// 		printf("Move disk %d from pin %d to %d.\n", n, i, k);
+// 		ft_hanoi((n-1), tmp, k);
+// 	} 
+// }
+
+// int	main(int argc, char *argv[])
+// {
+// 	ft_hanoi(3, 1, 2); //n - number of pancakes, i - from which tower, k - which tower
+// 	return (0); 
+// }
+ 
