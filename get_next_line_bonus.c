@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcorinna <lcorinna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 12:09:04 by lcorinna          #+#    #+#             */
-/*   Updated: 2021/12/01 19:29:02 by lcorinna         ###   ########.fr       */
+/*   Updated: 2021/12/01 19:25:05 by lcorinna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_trim_for_str(char *res)
 {
@@ -56,7 +56,7 @@ char	*ft_res_res(char *res, int i)
 {
 	if (i < 0)
 	{
-		res = NULL;
+		//res = NULL;
 		return (NULL);
 	}
 	if (i == 0)
@@ -95,7 +95,7 @@ char	*ft_read(int fd, char *res, int *chit, int i)
 
 char	*get_next_line(int fd)
 {
-	static char	*res;
+	static char	*res[2147483647];
 	char		*str;
 	int			chit;
 	int			i;
@@ -104,14 +104,14 @@ char	*get_next_line(int fd)
 	chit = 1;
 	if (fd < 0)
 		return (NULL);
-	if (res == NULL)
+	if (res[fd] == NULL)
 	{
-		res = (char *) malloc(sizeof(char) * chit);
-		res = ft_memset(res, '\0', chit++);
+		res[fd] = (char *) malloc(sizeof(char) * chit);
+		res[fd] = ft_memset(res, '\0', chit++);
 	}
-	res = ft_read(fd, res, &chit, i);
-	str = ft_trim_for_str(res);
-	res = ft_trim_for_res(res);
+	res[fd] = ft_read(fd, res[fd], &chit, i);
+	str = ft_trim_for_str(res[fd]);
+	res[fd] = ft_trim_for_res(res[fd]);
 	return (str);
 }
 
@@ -124,12 +124,14 @@ char	*get_next_line(int fd)
 // 	char	*gnl;
 
 // 	fd = open("text.txt", O_RDONLY);
-// 	while ((gnl = get_next_line(fd)) != NULL)
-// 	{
-// 		printf("%s", gnl);
-// 		free(gnl);
-// 		gnl = NULL;
-// 	}
+// 	gnl = get_next_line(fd);
+// 	printf("%s", gnl);
+// 	fd = open("artem.txt", O_RDONLY);
+// 	gnl = get_next_line(fd);
+// 	printf("%s", gnl);
+// 	fd = open("text.txt", O_RDONLY);
+// 	gnl = get_next_line(fd);
+// 	printf("%s", gnl);
 // 	close (fd);
 // 	return (0);
 // }
