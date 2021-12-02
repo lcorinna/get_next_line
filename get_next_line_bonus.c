@@ -6,7 +6,7 @@
 /*   By: lcorinna <lcorinna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 12:09:04 by lcorinna          #+#    #+#             */
-/*   Updated: 2021/12/02 16:21:15 by lcorinna         ###   ########.fr       */
+/*   Updated: 2021/12/02 16:36:22 by lcorinna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,10 @@ char	*ft_read(int fd, char *res, int *chit, int i)
 	while ((ft_strchr(res, '\n')) == NULL)
 	{
 		if (*chit != 1)
-		{
-			free(res);
-			res = NULL;
-			*chit = 1;
-		}
+			res = ft_free_res(res, chit);
 		str = (char *) malloc(sizeof(char) * BUFFER_SIZE + 1);
+		if (str == NULL)
+			return (NULL);
 		i = read(fd, str, BUFFER_SIZE);
 		if (i < 0 || i == 0)
 		{
