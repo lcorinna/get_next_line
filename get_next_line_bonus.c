@@ -6,7 +6,7 @@
 /*   By: lcorinna <lcorinna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 12:09:04 by lcorinna          #+#    #+#             */
-/*   Updated: 2021/12/01 19:25:05 by lcorinna         ###   ########.fr       */
+/*   Updated: 2021/12/02 16:21:15 by lcorinna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*ft_res_res(char *res, int i)
 {
 	if (i < 0)
 	{
-		//res = NULL;
+		res = NULL;
 		return (NULL);
 	}
 	if (i == 0)
@@ -95,7 +95,7 @@ char	*ft_read(int fd, char *res, int *chit, int i)
 
 char	*get_next_line(int fd)
 {
-	static char	*res[2147483647];
+	static char	*res[1001];
 	char		*str;
 	int			chit;
 	int			i;
@@ -107,7 +107,10 @@ char	*get_next_line(int fd)
 	if (res[fd] == NULL)
 	{
 		res[fd] = (char *) malloc(sizeof(char) * chit);
-		res[fd] = ft_memset(res, '\0', chit++);
+		if (res[fd] == NULL)
+			return (NULL);
+		while (chit != -1)
+			res[fd][chit--] = '\0';
 	}
 	res[fd] = ft_read(fd, res[fd], &chit, i);
 	str = ft_trim_for_str(res[fd]);

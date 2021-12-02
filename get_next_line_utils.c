@@ -6,7 +6,7 @@
 /*   By: lcorinna <lcorinna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 19:26:19 by lcorinna          #+#    #+#             */
-/*   Updated: 2021/12/01 12:47:26 by lcorinna         ###   ########.fr       */
+/*   Updated: 2021/12/02 15:30:20 by lcorinna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,17 +91,10 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (join);
 }
 
-void	*ft_memset(void *b, int c, size_t len)
+char	*ft_free_res(char *res, int *chit)
 {
-	int		i;
-	char	*e;
-
-	e = b;
-	i = 0;
-	while (i < (int) len)
-	{
-		e[i] = c;
-		i++;
-	}
-	return (e);
+	*chit = 1;
+	free(res);
+	res = NULL;
+	return (NULL);
 }

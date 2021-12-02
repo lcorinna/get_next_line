@@ -6,7 +6,7 @@
 /*   By: lcorinna <lcorinna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 12:09:04 by lcorinna          #+#    #+#             */
-/*   Updated: 2021/12/01 19:29:02 by lcorinna         ###   ########.fr       */
+/*   Updated: 2021/12/02 15:30:01 by lcorinna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,10 @@ char	*ft_read(int fd, char *res, int *chit, int i)
 	while ((ft_strchr(res, '\n')) == NULL)
 	{
 		if (*chit != 1)
-		{
-			free(res);
-			res = NULL;
-			*chit = 1;
-		}
+			res = ft_free_res(res, chit);
 		str = (char *) malloc(sizeof(char) * BUFFER_SIZE + 1);
+		if (str == NULL)
+			return (NULL);
 		i = read(fd, str, BUFFER_SIZE);
 		if (i < 0 || i == 0)
 		{
@@ -99,7 +97,9 @@ char	*get_next_line(int fd)
 	char		*str;
 	int			chit;
 	int			i;
+	int			j;
 
+	j = 0;
 	i = 0;
 	chit = 1;
 	if (fd < 0)
@@ -107,7 +107,10 @@ char	*get_next_line(int fd)
 	if (res == NULL)
 	{
 		res = (char *) malloc(sizeof(char) * chit);
-		res = ft_memset(res, '\0', chit++);
+		if (res == NULL)
+			return (NULL);
+		while (chit != -1)
+			res[chit--] = '\0';
 	}
 	res = ft_read(fd, res, &chit, i);
 	str = ft_trim_for_str(res);
