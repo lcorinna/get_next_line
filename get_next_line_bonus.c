@@ -6,7 +6,7 @@
 /*   By: lcorinna <lcorinna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 12:09:04 by lcorinna          #+#    #+#             */
-/*   Updated: 2021/12/02 16:36:22 by lcorinna         ###   ########.fr       */
+/*   Updated: 2021/12/04 19:22:15 by lcorinna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	*ft_read(int fd, char *res, int *chit, int i)
 
 char	*get_next_line(int fd)
 {
-	static char	*res[1001];
+	static char	*res[1025];
 	char		*str;
 	int			chit;
 	int			i;
@@ -115,24 +115,3 @@ char	*get_next_line(int fd)
 	res[fd] = ft_trim_for_res(res[fd]);
 	return (str);
 }
-
-// #include <stdio.h>
-// #include <fcntl.h>
-
-// int	main(void)
-// {
-// 	int		fd;
-// 	char	*gnl;
-
-// 	fd = open("text.txt", O_RDONLY);
-// 	gnl = get_next_line(fd);
-// 	printf("%s", gnl);
-// 	fd = open("artem.txt", O_RDONLY);
-// 	gnl = get_next_line(fd);
-// 	printf("%s", gnl);
-// 	fd = open("text.txt", O_RDONLY);
-// 	gnl = get_next_line(fd);
-// 	printf("%s", gnl);
-// 	close (fd);
-// 	return (0);
-// }

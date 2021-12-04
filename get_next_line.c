@@ -6,7 +6,7 @@
 /*   By: lcorinna <lcorinna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 12:09:04 by lcorinna          #+#    #+#             */
-/*   Updated: 2021/12/02 15:30:01 by lcorinna         ###   ########.fr       */
+/*   Updated: 2021/12/04 19:21:41 by lcorinna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,7 @@ char	*get_next_line(int fd)
 	char		*str;
 	int			chit;
 	int			i;
-	int			j;
 
-	j = 0;
 	i = 0;
 	chit = 1;
 	if (fd < 0)
@@ -117,22 +115,3 @@ char	*get_next_line(int fd)
 	res = ft_trim_for_res(res);
 	return (str);
 }
-
-// #include <stdio.h>
-// #include <fcntl.h>
-
-// int	main(void)
-// {
-// 	int		fd;
-// 	char	*gnl;
-
-// 	fd = open("text.txt", O_RDONLY);
-// 	while ((gnl = get_next_line(fd)) != NULL)
-// 	{
-// 		printf("%s", gnl);
-// 		free(gnl);
-// 		gnl = NULL;
-// 	}
-// 	close (fd);
-// 	return (0);
-// }
